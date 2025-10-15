@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import Header from './components/Header'
 import Profile from './components/Profile'
+import Spinner from './components/Loading';
 
 function App() {
  
-  const [showResult, toggleResult] = useState(false);
   const [results, setResults] = useState([]);
-
-
+  
   const api = 'https://jsonplaceholder.typicode.com/users';
 
   useEffect(() => {
@@ -16,9 +15,10 @@ function App() {
       fetch(api)
         .then(response => response.json())
         .then(data => {
-          console.log(data);
-            setResults(data); // update the data/results
-            data && toggleResult(true); // show the results
+          // simulate delay - large data is fetching
+          setTimeout(() => {
+              setResults(data);
+          }, 5000);
         })
         .catch(error => console.error("Failed to fetch: " + error));
   }, []);
@@ -40,11 +40,10 @@ function App() {
     <>
       <div className='grid gap-3 p-5'>
         <Header/>
-        
         {
-          showResult ?
+          (results.length > 0) ?
           (
-            <div className='bg-gray-50 p-10 rounded-md grid grid-cols-5 gap-2 mt-5'>
+            <div className='bg-gray-50 p-10 rounded-md grid grid-cols-5 gap-3 mt-5'>
                 {
                   results.map((user) => (
                       <Profile name={user.name} username={user.username} email={user.email}/>
@@ -53,8 +52,8 @@ function App() {
             </div>
           ) : 
           (
-            <div className='h-90  flex items-center justify-center'>
-                Please enter your API and press the fetch button.
+            <div className='h-90 flex justify-center items-center'>
+              <Spinner/>
             </div>
           )
         }

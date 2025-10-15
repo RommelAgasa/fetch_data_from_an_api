@@ -8,7 +8,7 @@ export default function Profile({name, username, email}: ProfileProp){
 
     return(
         <>
-            <div className="border w-full flex flex-col justify-center items-center p-4">
+            <div className="border rounded-md w-full flex flex-col justify-center items-center p-4">
                 <div className="w-40 flex justify-center items-center mb-4 bg-gray-200 p-4 rounded-md">
                     <i className="fa-solid fa-user-secret text-7xl"></i>
                 </div>
