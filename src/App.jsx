@@ -5,23 +5,28 @@ import Profile from './components/Profile'
 import Spinner from './components/Loading';
 
 function App() {
- 
+  const [allUsers, setAllUsers] = useState([]);  // full data cache
   const [results, setResults] = useState([]);
-  
+
   const api = 'https://jsonplaceholder.typicode.com/users';
 
   useEffect(() => {
-        // get the data from an API
-      fetch(api)
-        .then(response => response.json())
-        .then(data => {
-          // simulate delay - large data is fetching
-          setTimeout(() => {
-              setResults(data);
-          }, 5000);
-        })
-        .catch(error => console.error("Failed to fetch: " + error));
+      fetchData();
   }, []);
+
+  function fetchData(){
+     // get the data from an API
+    fetch(api)
+      .then(response => response.json())
+      .then(data => {
+        // simulate delay - large data is fetching
+        setTimeout(() => {
+            setAllUsers(data); // cache
+            setResults(data);
+        }, 2000);
+      })
+      .catch(error => console.error("Failed to fetch: " + error));
+  }
 
   // using async / await
   // async function async_FetchAPI(){
@@ -39,7 +44,7 @@ function App() {
   return (
     <>
       <div className='grid gap-3 p-5'>
-        <Header/>
+        <Header users={allUsers} updateResults={setResults}/>
         {
           (results.length > 0) ?
           (

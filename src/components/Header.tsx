@@ -1,37 +1,66 @@
 import { useState } from "react";
 
-type HeaderProps = {
-    showResult(show: boolean) : void,
-    updateResult(): void
+type ProfileProp = {
+    name: string;
+    username:string;
+    email: string;
 }
-export default function Header(){
 
-    function validateAPI(e: React.FormEvent){
+type HeaderProps = {
+    users: ProfileProp[];
+    updateResults([]): void;
+}
+export default function Header({ users, updateResults } : HeaderProps){
+
+    const [search, setSearch] = useState("");
+
+    function serach(e: React.FormEvent){
         e.preventDefault();
-        // if(api.trim() != null){
-        //     //fetchAPI();
-        //     async_FetchAPI();
-        // }
+        if(search.trim() != ""){
+            const keyword = search.toLowerCase();
+            const filteredData = users.filter(
+                u  => (
+                    u.name.toLowerCase().includes(keyword) ||
+                    u.username.toLowerCase().includes(keyword) || 
+                    u.email.toLowerCase().includes(keyword)
+                )
+            );
+            updateResults(filteredData);
+        }
     }
-
+    
     return (
-        <>
-            <div>
-                <form className="flex bg-gray-50 rounded-md h-20 justify-start items-center gap-3 p-4" 
-                noValidate onSubmit={validateAPI}>
-                    <div className="">
-                        <button
-                        type="submit"
-                        className="bg-gray-600 text-white p-2 rounded-md w-26 hover:bg-gray-500 cursor-pointer">Search</button>
-                    </div>
-                    <div>
-                        <input className="border border-gray-600 focus:border-blue-500 outline-none p-2 w-[500px]" 
-                        type="text"
-                        placeholder="Enter API"
-                        />
-                    </div>
-                </form>
-            </div>
-        </>
+    <div className="flex items-center justify-between bg-gray-50 rounded-md h-20 p-4">
+        {/* Search Form */}
+        <form
+        noValidate
+        onSubmit={serach}
+        className="flex items-center gap-3"
+        >
+        
+        <button
+            type="submit"
+            className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500 cursor-pointer"
+        >
+            Search
+        </button>
+        <input
+            className="border border-gray-600 focus:border-blue-500 outline-none p-2 w-[400px] rounded-md"
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Enter API"
+        />
+        </form>
+
+        {/* Reset Button */}
+        <button
+        onClick={() => (updateResults(users))}
+        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 cursor-pointer"
+        >
+        Reset
+        </button>
+    </div>
     );
+
 }
