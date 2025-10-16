@@ -1,10 +1,19 @@
-type ProfileProp = {
+
+export type Address = { 
+    city: string;
+    zipcode: string;
+}
+
+export type User = {
     name: string;
     username:string;
     email: string;
+    address:Address;
+    phone: string;
+    website: string;
 }
 
-export default function Profile({name, username, email}: ProfileProp){
+export default function Profile({name, username, email, address, phone, website}: User){
 
     return(
         <>
@@ -16,6 +25,9 @@ export default function Profile({name, username, email}: ProfileProp){
                     <h1>Name: {name}</h1>
                     <h2>Username: {username}</h2>
                     <h2>Email: {email}</h2>
+                    <h2>Adddress: {address.city + ", " + address.zipcode}</h2>
+                    <h2>Phone: {phone}</h2>
+                    <h2>Website: {website}</h2>
                 </div>
             </div>
         </>

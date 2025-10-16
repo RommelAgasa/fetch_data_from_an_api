@@ -1,20 +1,17 @@
 import { useState } from "react";
+import type { User } from './Profile';
 
-type ProfileProp = {
-    name: string;
-    username:string;
-    email: string;
-}
 
 type HeaderProps = {
-    users: ProfileProp[];
-    updateResults([]): void;
+    users: User[];
+    updateResults: (users: User[]) => void;
 }
+
 export default function Header({ users, updateResults } : HeaderProps){
 
     const [search, setSearch] = useState("");
 
-    function serach(e: React.FormEvent){
+    function filter(e: React.FormEvent){
         e.preventDefault();
         if(search.trim() != ""){
             const keyword = search.toLowerCase();
@@ -34,7 +31,7 @@ export default function Header({ users, updateResults } : HeaderProps){
         {/* Search Form */}
         <form
         noValidate
-        onSubmit={serach}
+        onSubmit={filter}
         className="flex items-center gap-3"
         >
         
@@ -49,16 +46,16 @@ export default function Header({ users, updateResults } : HeaderProps){
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Enter API"
+            placeholder="Search"
         />
         </form>
 
-        {/* Reset Button */}
+        {/* Clear Button */}
         <button
         onClick={() => (updateResults(users))}
         className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 cursor-pointer"
         >
-        Reset
+        Clear Search
         </button>
     </div>
     );
