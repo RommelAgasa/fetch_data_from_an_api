@@ -52,7 +52,7 @@ export default function Header({ users, updateResults } : HeaderProps){
 
         {/* Clear Button */}
         <button
-        onClick={() => (updateResults(users))}
+        onClick={() => {setSearch(""); updateResults(users)}}
         className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500 cursor-pointer"
         >
         Clear Search
